@@ -1,3 +1,12 @@
+###############################################################
+# 作成日：2018/05/29
+# 作成者：戸田滉洋
+#
+# 更新日：2018/08/14
+# 更新者：戸田滉洋
+# Copyright © 2018 Flugell System Studio. All rights reserved.
+###############################################################
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -30,47 +39,43 @@ def main():
     # print(account)
 
 
-    # データベースに接続
-    connect = mysql.connector.connect(user=account['user'], password=account['pass'], host=account['host'], database='mietaro', charset='utf8')
-    cursor = connect.cursor()
+# データベースに接続
+connect = mysql.connector.connect(user=account['user'], password=account['pass'], host=account['host'], database='mietaro', charset='utf8')
+cursor = connect.cursor()
 
-    SrcPath = os.path.join(opts['srcpath'],'*')
-    # print(SrcPath)
+# ファイル読み込み
+SrcPath = os.path.join(opts['srcpath'],'*')
+print(SrcPath)
 
-    for file in glob.glob(SrcPath):
-        print(file)
-        csv_file = open(file,"r",encoding='utf-8')
-    # df = pd.read_csv(csv_file)
+# CSVデータから値を取得し、DBに値を挿入
+for file in glob.glob(SrcPath):
+    print(file)
+    csv_file = open(file,"r",encoding='utf-8')
+    for data in csv_file:
+        data = data.replace('\n','')
+        print(data.split(",")[0])
+        print(data.split(",")[1])
+        print(data.split(",")[2])
+        if (issset(data.split(",")[3])){
+            sql = "INSERT INTO electric (electric_at,str_id,electric_kw,damad_kw,electric_m) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql, (data.split(",")[0],data.split(",")[1],data.split(",")[2]),data.split(",")[3]),0)
+        }else if (issset(data.split(",")[4])){
+            sql = "INSERT INTO electric (electric_at,str_id,electric_kw,damad_kw,electric_m) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql, (data.split(",")[0],data.split(",")[1],data.split(",")[2]),data.split(",")[3],data.split(",")[4])
+        }else{
+            sql = "INSERT INTO electric (electric_at,str_id,electric_kw,damad_kw,electric_m) VALUES (%s, %s, %s, %s, %s)"
+            cursor.execute(sql, (data.split(",")[0],data.split(",")[1],data.split(",")[2]),0,0)
+        }
+        print(data.split(",")[3])
+        #sql = "INSERT INTO electric (electric_at,str_id,electric_kw,damad_kw) VALUES (%s, %s, %s,%s)"
+        cursor.execute(sql, (data.split(",")[0],data.split(",")[1],data.split(",")[2]))
 
-        # csv_file = pd.read_csv(file,header=None)
-        for data in csv_file:
-            print(data)
-            data = data.replace('\n','')
-            data0 = data.split(",")[0]
-
-            if data0 != "\"electric_at\"":
-                re_data0 = data0.replace("/","-")
-                re_data0 = re_data0.replace("\"","")
-                print(re_data0)
-                # t_date = dt.strptime(re_data0, '%Y-%m-%d %H:%M:%S')
-                # print(t_data)
-                # print(data.split(",")[0])
-                # print(data.split(",")[1])
-                # print(data.split(",")[2])
-                sql = "INSERT INTO electric (electric_at,str_id,electric_kw) VALUES (%s, %s, %s)"
-                cursor.execute(sql, (re_data0,data.split(",")[1],data.split(",")[2]))
-
-        csv_file.close()
-        mv_file = file.split("/")
-        work_file = dt.now().strftime('%Y%m%d%H%M%S')+"-"+mv_file[2]
-        print(work_file)
-        work_path_file = os.path.join(opts['workpath'],work_file)
-        print(work_path_file)
-        shutil.move(file,work_path_file)
-    # データベースから切断
-    connect.commit()
-    cursor.close()
-    connect.close()
+    csv_file.close()
+    shutil.move(file,opts['workpath'])
+# データベースから切断
+connect.commit()
+cursor.close()
+connect.close()
 
 if __name__ == '__main__':
-    main()
+main()

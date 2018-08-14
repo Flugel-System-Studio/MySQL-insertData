@@ -1,6 +1,14 @@
-#!/usr/bin/python
+
+##############################################################
+# 作成日：2018/05/29
+# 作成者：戸田滉洋
 #
-# setup.py
+# 更新日：2018/05/29
+# 更新者：戸田滉洋
+# Copyright © 2018 Flugell System Studio. All rights reserved.
+##############################################################
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import sys
 from cx_Freeze import setup, Executable
