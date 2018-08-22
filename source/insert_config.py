@@ -3,7 +3,7 @@
 # 作成日：2018/05/29
 # 作成者：戸田滉洋
 #
-# 更新日：2018/05/29
+# 更新日：2018/08/16
 # 更新者：戸田滉洋
 # Copyright © 2018 Flugell System Studio. All rights reserved.
 ##############################################################
@@ -23,11 +23,11 @@ def opts_read(cfg):
     opts= dict(cfg.items(sect))
     return opts
 
-def account_read(cfg):
-    account = {}
+def acount_read(cfg):
+    acount = {}
 
     # セクション内の指定項目だけを取り込む。
-    sect = "account"
+    sect = "acount"
 
-    account = dict(cfg.items(sect))
-    return account
+    acount = dict(cfg.items(sect))
+    return acount
