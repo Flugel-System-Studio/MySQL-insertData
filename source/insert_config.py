@@ -1,3 +1,5 @@
+#!/user/bin/python
+# -*- coding: utf-8 -*-
 
 ##############################################################
 # 作成日：2018/05/29
@@ -7,10 +9,6 @@
 # 更新者：戸田滉洋
 # Copyright © 2018 Flugell System Studio. All rights reserved.
 ##############################################################
-
-
-#!/user/bin/python
-# -*- coding: utf-8 -*-
 
 import sys
 import insert_main

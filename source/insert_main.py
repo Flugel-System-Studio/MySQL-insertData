@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+##############################################################
+# 作成日：2018/05/29
+# 作成者：戸田滉洋
+#
+# 更新日：2018/08/16
+# 更新者：戸田滉洋
+# Copyright © 2018 Flugell System Studio. All rights reserved.
+##############################################################
+
 # ドライバをimport
 import mysql.connector
 import csv
@@ -12,6 +21,8 @@ import configparser
 import insert_config
 import shutil
 from datetime import datetime as dt
+from datetime import timedelta
+import codecs
 
 def main():
     # 設定ファイルをロード
@@ -25,7 +36,7 @@ def main():
     cfg_opts = insert_config.opts_read(cfg)
     opts = cfg_opts
     # print(opts)
-    cfg_account = insert_config.account_read(cfg)
+    cfg_account = insert_config.acount_read(cfg)
     account = cfg_account
     # print(account)
 
@@ -39,8 +50,9 @@ def main():
 
     for file in glob.glob(SrcPath):
         print(file)
-        csv_file = open(file,"r",encoding='utf-8')
-    # df = pd.read_csv(csv_file)
+        csv_file = codecs.open(file,"r",encoding="utf-8")
+        # csv_file = open(file,"r",encoding="utf-8")
+        # df = pd.read_csv(csv_file)
 
         # csv_file = pd.read_csv(file,header=None)
         for data in csv_file:
@@ -52,7 +64,17 @@ def main():
                 re_data0 = data0.replace("/","-")
                 re_data0 = re_data0.replace("\"","")
                 print(re_data0)
-                # t_date = dt.strptime(re_data0, '%Y-%m-%d %H:%M:%S')
+                dateString_1 = re_data0.split(" ")[0]
+                dateString_2 = re_data0.split(" ")[1]
+                dateString = dateString_1 + " " + dateString_2
+                # print(dateString)
+                # 依頼修正版
+                t_date = dt.strptime(dateString, '%Y-%m-%d %H:%M:%S')
+                # print(t_date)
+                e_date = t_date - timedelta(minutes=30)
+                s_date = e_date.strftime('%Y-%m-%d %H:%M:%S')
+                print(s_date)
+                
                 # print(t_data)
                 # print(data.split(",")[0])
                 # print(data.split(",")[1])
@@ -62,6 +84,8 @@ def main():
 
                 sql = "INSERT INTO Electric (electric_at, str_id, electric_kw, demand_kw, power_rate) VALUES (%s, %s, %s, %s, %s)"
                 cursor.execute(sql, (re_data0, data.split(",")[1], data.split(",")[2], data.split(",")[3], data.split(",")[4]))
+                # 依頼修正版
+                # cursor.execute(sql, (s_date, data.split(",")[1], data.split(",")[2], data.split(",")[3], data.split(",")[4]))
 
 
 

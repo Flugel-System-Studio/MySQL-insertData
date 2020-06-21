@@ -1,2 +1,6 @@
 Data/sample1.csv
 Data/sample.csv
+testdata/
+Work/
+source/__pycache__/
+*.pyc
